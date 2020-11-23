@@ -41,7 +41,7 @@ More on [ChongshengB](https://github.com/chongshengB/rt-n56u)
 
 
 
-
+* 当前最新版本:K2P_nano-5.0.20.112320.trx  最后编译时间: 2020-11-23 20:41:11  下载地址: [奶牛快传](https://cowtransfer.com/s/a6946caa24b149)  [WeTransfer](https://we.tl/t-aSyZbGpzF1)
 
 
 
