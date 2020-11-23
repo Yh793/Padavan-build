@@ -53,6 +53,8 @@ jobs:
           cd /opt/rt-n56u/trunk/user/shared
           sed -i "s#https://cdn.jsdelivr.net/gh/Padavan_CI/ssp/trojan#https://cdn.jsdelivr.net/gh/YH793/Padavan-build/ssp/trojan#g" ./defaults.c
           sed -i "s#https://cdn.jsdelivr.net/gh/Padavan_CI/ssp/v2ray#https://cdn.jsdelivr.net/gh/YH793/Padavan-build/ssp/v2ray#g" ./defaults.c
+          cd /opt/rt-n56u/trunk/user/adguardhome
+          sed -i "s#https://cdn.jsdelivr.net/gh/chongshengB/rt-n56u/trunk/user/adguardhome/AdGuardHome#https://cdn.jsdelivr.net/gh/Yh793/Padavan-build/adg/AdGuardHome#g" ./adguardhome.sh
       - name: Get current time
         uses: 1466587594/get-current-time@v2
         id: current-time
