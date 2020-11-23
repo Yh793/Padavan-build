@@ -37,7 +37,7 @@ More on [ChongshengB](https://github.com/chongshengB/rt-n56u)
 
 
 
-
+* 当前最新版本:NEWIFI3.20.112318.trx  最后编译时间: 2020-11-23 20:35:22  下载地址: [奶牛快传](https://cowtransfer.com/s/ac9bfa10587242)  [WeTransfer](https://we.tl/t-pzmWEcqLXb)
 
 
 
