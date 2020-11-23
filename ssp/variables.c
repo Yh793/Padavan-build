@@ -598,7 +598,7 @@
 			{"dhcp_staticnum_x", "", NULL, EVM_RESTART_DHCPD},
 			{"dnsmasq.hosts", "File", NULL, EVM_RESTART_DHCPD},
 			{"dnsmasq.dnsmasq.conf", "File", NULL, EVM_RESTART_DHCPD},
-			{"dnsmasq.dnsmasq.servers", "File", NULL, EVM_RESTART_DHCPD},
+			{"dnsmasq.dhcp.conf", "File", NULL, EVM_RESTART_DHCPD},
 			{"http_access", "", NULL, EVM_RESTART_HTTPD},
 			{"http_proto", "", NULL, EVM_RESTART_HTTPD},
 			{"http_lanport", "", NULL, EVM_RESTART_HTTPD},
@@ -1467,4 +1467,3 @@
 		{EVM_RESTART_FIREWALL,		EVT_RESTART_FIREWALL,		RCN_RESTART_FIREWALL,	0},
 		{0,0,0,0}
 	};
-
