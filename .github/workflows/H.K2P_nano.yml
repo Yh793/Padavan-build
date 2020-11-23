@@ -1,0 +1,114 @@
+#修改TNAME: K2P-5.0 中的K2P-5.0为你需要编译的型号，注意名称要与configs/templates/目录下的名字相同
+name: H.K2P_nano-5.0
+
+on:
+  workflow_dispatch:
+    inputs:
+      name:
+        description: "Build Padavan"
+        required: true
+        default: "build"
+  #release:
+  # types: [created]
+  push:
+    tags:
+      - "v*"
+  #  branches:
+  #    - master
+  #  schedule:
+  #    - cron: 0 8 * * 5
+  #watch:
+  #  types: [started]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: github.event.repository.owner.id == github.event.sender.id
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@main
+      - name: Initialization environment
+        env:
+          DEBIAN_FRONTEND: noninteractive
+          token: ${{ secrets.R_TOKEN }}
+        run: |
+          sudo apt-get update
+          sudo apt-get -y install unzip libtool-bin curl cmake gperf gawk flex bison nano xxd fakeroot kmod \
+          cpio git python-docutils gettext automake autopoint texinfo build-essential help2man \
+          pkg-config zlib1g-dev libgmp3-dev libmpc-dev libmpfr-dev libncurses5-dev libltdl-dev wget libc-dev-bin
+      - name: Clone source code
+        run: |
+          git clone --depth=1 https://github.com/Yh793/rt-n56u.git /opt/rt-n56u
+          cd /opt/rt-n56u/toolchain-mipsel
+          sh dl_toolchain.sh
+          mkdir -p /opt/images/
+
+      - name: Get current time
+        uses: 1466587594/get-current-time@v2
+        id: current-time
+        with:
+          format: YY.MMDDHH
+          utcOffset: "+08:00"
+      #- name: SSH connection to Actions
+      #  uses: P3TERX/ssh2actions@v1.0.0  
+      - name: Build Firmware
+        env:
+          TNAME: K2P_nano-5.0 #K2P_nano-5.0 PSG1218 K2P-5.0 K2P K2P_nano PSG1208 PSG1218_nano
+        run: |
+          cd /opt/rt-n56u/trunk
+          if [ ! -f configs/templates/$TNAME.config ] ; then
+          echo "configs/templates/$TNAME.config not found "
+          exit 1
+          fi
+          cp -f configs/templates/$TNAME.config .config
+
+          sudo ./clear_tree
+          sudo ./build_firmware_modify $TNAME 0
+          sudo mv -f images/*.trx /opt/images/${TNAME}_Hanwckf_${{ steps.current-time.outputs.formattedTime }}.trx
+          echo "FNAME=$TNAME" >> $GITHUB_ENV
+      - name: Organize files
+        id: organize
+        run: |
+          echo "::set-output name=status::success"
+      - name: Upload packages - push to artifact file
+        uses: actions/upload-artifact@main
+        if: steps.organize.outputs.status == 'success'
+        with:
+          name: Padavan-packages
+          path: /opt/images
+        #上传到WeTransfer
+      - name: Upload firmware to WeTransfer
+        id: wetransfer
+        if: steps.organize.outputs.status == 'success'
+        run: |
+          curl -fsSL git.io/file-transfer | sh
+          ./transfer wet  -s -p 16 --no-progress /opt/images/*.trx 2>&1 | tee wetransfer.log
+          echo "::warning file=wetransfer.com::$(cat wetransfer.log | grep https)"
+          echo "DOWNLOADURL2=$(cat wetransfer.log | grep -o -E "https?://[a-zA-Z0-9\.\/_&=@$%?~#-]*")" >> $GITHUB_ENV
+          echo "::set-output name=status::success"
+        #上传到奶牛快传
+      - name: Upload firmware to cowtransfer
+        id: cowtransfer
+        if: steps.wetransfer.outputs.status == 'success'
+        run: |
+          curl -sL https://git.io/cowtransfer | sh
+          ./cowtransfer-uploader -s -p 16 --hash /opt/images/*.trx 2>&1 | tee cowtransfer.log
+          echo "::warning file=cowtransfer.com::$(cat cowtransfer.log | grep https)"
+          echo "DOWNLOADURL=$(cat cowtransfer.log | grep -o -E "https?://[a-zA-Z0-9\.\/_&=@$%?~#-]*")" >> $GITHUB_ENV
+          echo "::set-output name=status::success"
+      - name: Update README.md
+        if: steps.cowtransfer.outputs.status == 'success'
+        run: |
+          git pull origin master
+          sed "12c * 当前最新版本:${FNAME}.${{ steps.current-time.outputs.formattedTime }}.trx  最后编译时间: $(date -u -d '+8 hour' '+%Y-%m-%d %H:%M:%S')  下载地址: [奶牛快传](${DOWNLOADURL})  [WeTransfer](${DOWNLOADURL2})" README.md -i
+          git config user.name  Robot
+          git config user.email github-actions@github.com
+          git commit -m "update README.md" -a
+          git push
+      - name: Remove obsolete firmwares on artifacts
+        uses: c-hive/gha-remove-artifacts@v1.2.0
+        if: always()
+        with:
+          age: '3 day'
+          skip-recent: 5

@@ -1,0 +1,23 @@
+name: Delete old workflow runs
+on:
+  schedule:
+    - cron: 0 0 * * 6
+
+  watch:
+    types: [started]
+jobs:
+  del_runs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@main
+        env:
+          DEBIAN_FRONTEND: noninteractive
+          token: ${{ secrets.R_TOKEN }}
+
+      - name: Delete workflow runs
+        uses: ActionsRML/delete-workflow-runs@main
+        with:
+          repository: ${{ github.repository }}
+          retain_days: 3
+          keep_minimum_runs: 1
