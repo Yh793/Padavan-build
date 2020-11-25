@@ -39,7 +39,7 @@ jobs:
           pkg-config zlib1g-dev libgmp3-dev libmpc-dev libmpfr-dev libncurses5-dev libltdl-dev wget libc-dev-bin
       - name: Clone source code
         run: |
-          git clone -b patch3 --depth=1 https://github.com/Yh793/rt-n56u.git /opt/rt-n56u
+          git clone -b sfe --depth=1 https://github.com/Yh793/rt-n56u.git /opt/rt-n56u
           cd /opt/rt-n56u/toolchain-mipsel
           sh dl_toolchain.sh
           mkdir -p /opt/images/
@@ -50,11 +50,11 @@ jobs:
         with:
           format: YY.MMDDHH
           utcOffset: "+08:00"
-      - name: SSH connection to Actions
-        uses: P3TERX/ssh2actions@v1.0.0  
+      #- name: SSH connection to Actions
+      #  uses: P3TERX/ssh2actions@v1.0.0  
       - name: Build Firmware
         env:
-          TNAME: PSG1218_nano #K2P_nano-5.0 PSG1218 K2P-5.0 K2P K2P_nano PSG1208 PSG1218_nano
+          TNAME: K2P_nano-5.0 #K2P_nano-5.0 PSG1218 K2P-5.0 K2P K2P_nano PSG1208 PSG1218_nano
         run: |
           cd /opt/rt-n56u/trunk
           if [ ! -f configs/templates/$TNAME.config ] ; then
