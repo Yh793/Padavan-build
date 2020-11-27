@@ -35,7 +35,7 @@ More on [ChongshengB](https://github.com/chongshengB/rt-n56u)
 
 
 
-* 当前最新版本:K2P-5.0.20.112516.trx  最后编译时间: 2020-11-25 16:35:36  下载地址: [奶牛快传](https://cowtransfer.com/s/ccbbac9666d945)  [WeTransfer](https://we.tl/t-5bfJ76o0ah)
+* 当前最新版本:K2P-5.0.20.112716.trx  最后编译时间: 2020-11-27 17:07:17  下载地址: [奶牛快传](https://cowtransfer.com/s/2a7eee52a81f4e)  [WeTransfer](https://we.tl/t-Mh48oBhGFF)
 
 * 当前最新版本:NEWIFI3.20.112620.trx  最后编译时间: 2020-11-26 21:32:01  下载地址: [奶牛快传](https://cowtransfer.com/s/533b0fea25514b)  [WeTransfer](https://we.tl/t-oguN2JSeAO)
 
