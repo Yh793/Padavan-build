@@ -43,18 +43,7 @@ jobs:
           cd /opt/rt-n56u/toolchain-mipsel
           sh dl_toolchain.sh
           mkdir -p /opt/images/
-      - name: Recovery SSP bin files download from remote
-        run: |
-          cp -f ssp/Makefile /opt/rt-n56u/trunk/user/shadowsocks
-          cp -f ssp/shadowsocks.sh /opt/rt-n56u/trunk/user/shadowsocks/scripts
-          cp -f ssp/defaults.c /opt/rt-n56u/trunk/user/shared
-          cp -f ssp/variables.c /opt/rt-n56u//trunk/user/httpd
-          cp -f ssp/Shadowsocks.asp /opt/rt-n56u/trunk/user/www/n56u_ribbon_fixed
-          cd /opt/rt-n56u/trunk/user/shared
-          sed -i "s#https://cdn.jsdelivr.net/gh/Padavan_CI/ssp/trojan#https://cdn.jsdelivr.net/gh/YH793/Padavan-build/ssp/trojan#g" ./defaults.c
-          sed -i "s#https://cdn.jsdelivr.net/gh/Padavan_CI/ssp/v2ray#https://cdn.jsdelivr.net/gh/YH793/Padavan-build/ssp/v2ray#g" ./defaults.c
-          cd /opt/rt-n56u/trunk/user/adguardhome
-          sed -i "s#https://cdn.jsdelivr.net/gh/chongshengB/rt-n56u/trunk/user/adguardhome/AdGuardHome#https://cdn.jsdelivr.net/gh/Yh793/Padavan-build/adg/AdGuardHome#g" ./adguardhome.sh
+
       - name: Get current time
         uses: 1466587594/get-current-time@v2
         id: current-time
