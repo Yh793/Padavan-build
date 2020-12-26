@@ -53,8 +53,8 @@ jobs:
       - name: set go
         run: |
           cd /opt/hostedtoolcache/go
-          rm -rf /opt/hostedtoolcache/go/1.14.12
-          mv 1.15.5 1.14.12
+          rm -rf /opt/hostedtoolcache/go/1.14.13
+          mv 1.15.6 1.14.13
 
       #- name: SSH connection to Actions
       #  uses: P3TERX/ssh2actions@v1.0.0
