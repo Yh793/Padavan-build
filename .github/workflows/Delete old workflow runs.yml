@@ -19,5 +19,5 @@ jobs:
         uses: ActionsRML/delete-workflow-runs@main
         with:
           repository: ${{ github.repository }}
-          retain_days: 3
+          retain_days: 0.02
           keep_minimum_runs: 1
