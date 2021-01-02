@@ -8,16 +8,12 @@ on:
 jobs:
   del_runs:
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@main
-        env:
-          DEBIAN_FRONTEND: noninteractive
-          token: ${{ secrets.R_TOKEN }}
+    steps:      
 
       - name: Delete workflow runs
         uses: ActionsRML/delete-workflow-runs@main
         with:
+          token: ${{ secrets.R_TOKEN }}
           repository: ${{ github.repository }}
           retain_days: 0.02
           keep_minimum_runs: 1
