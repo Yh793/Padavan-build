@@ -8,10 +8,9 @@ on:
 jobs:
   del_runs:
     runs-on: ubuntu-latest
-    steps:      
-
+    steps:
       - name: Delete workflow runs
-        uses: ActionsRML/delete-workflow-runs@main
+        uses: GitRML/delete-workflow-runs@main
         with:
           #token: ${{ secrets.R_TOKEN }}
          # repository: ${{ github.repository }}
