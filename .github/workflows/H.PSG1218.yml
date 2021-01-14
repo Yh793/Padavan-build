@@ -65,7 +65,8 @@ jobs:
 
           sed -i '/CONFIG_FIRMWARE_INCLUDE_SFE/d' configs/templates/$TNAME.config #删除配置项SFE加速
           echo "CONFIG_FIRMWARE_INCLUDE_SFE=n" >> configs/templates/$TNAME.config #集成SFE加速
-
+          sed -i '/CONFIG_FIRMWARE_INCLUDE_REDSOCKS/d' configs/templates/$TNAME.config
+          echo "CONFIG_FIRMWARE_INCLUDE_REDSOCKS=y" >> configs/templates/$TNAME.config
           sudo ./clear_tree
           sudo ./build_firmware_modify $TNAME 0
           sudo mv -f images/*.trx /opt/images/${TNAME}_Hanwckf_${{ steps.current-time.outputs.formattedTime }}.trx
