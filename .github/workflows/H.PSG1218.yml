@@ -71,8 +71,7 @@ jobs:
           sudo ./build_firmware_modify $TNAME 0
           sudo mv -f images/*.trx /opt/images/${TNAME}_Hanwckf_${{ steps.current-time.outputs.formattedTime }}.trx
           echo "FNAME=$TNAME" >> $GITHUB_ENV
-      - name: SSH connection to Actions
-        uses: P3TERX/ssh2actions@v1.0.0 
+
       - name: Organize files
         id: organize
         run: |
