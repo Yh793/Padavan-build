@@ -33,10 +33,8 @@ jobs:
           DEBIAN_FRONTEND: noninteractive
           token: ${{ secrets.R_TOKEN }}
         run: |
-          sudo apt-get update
-          sudo apt-get -y install unzip libtool-bin curl cmake gperf gawk flex bison nano xxd fakeroot kmod \
-          cpio git python-docutils gettext automake autopoint texinfo build-essential help2man \
-          pkg-config zlib1g-dev libgmp3-dev libmpc-dev libmpfr-dev libncurses5-dev libltdl-dev wget libc-dev-bin
+          sudo apt update
+          sudo apt install libtool-bin gperf python-docutils autopoint gettext zip
       - name: Clone source code
         run: |
           git clone  -b fix --depth=1 https://github.com/yh793/rt-n56u.git /opt/rt-n56u
@@ -68,7 +66,7 @@ jobs:
           sed -i '/CONFIG_FIRMWARE_INCLUDE_REDSOCKS/d' configs/templates/$TNAME.config
           echo "CONFIG_FIRMWARE_INCLUDE_REDSOCKS=y" >> configs/templates/$TNAME.config
           sudo ./clear_tree
-          sudo ./build_firmware_modify $TNAME 0
+          fakeroot ./build_firmware_modify $TNAME 0
           sudo mv -f images/*.trx /opt/images/${TNAME}_Hanwckf_${{ steps.current-time.outputs.formattedTime }}.trx
           echo "FNAME=$TNAME" >> $GITHUB_ENV
 
