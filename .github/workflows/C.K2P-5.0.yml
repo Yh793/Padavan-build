@@ -61,8 +61,11 @@ jobs:
         with:
           format: YY.MMDDHH
           utcOffset: "+08:00"
-      #- name: Run Golang check
+      - name: Run Golang check
       #  run: sh ./scripts/go.sh
+        run: |
+          export GOPROXY=https://mirrors.aliyun.com/goproxy/
+          go env
 
       #- name: SSH connection to Actions
       #  uses: P3TERX/ssh2actions@v1.0.0
