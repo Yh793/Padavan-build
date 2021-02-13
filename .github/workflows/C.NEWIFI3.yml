@@ -61,8 +61,8 @@ jobs:
         with:
           format: YY.MMDDHH
           utcOffset: "+08:00"
-      - name: Run Golang check
-        run: sh ./scripts/go.sh
+      #- name: Run Golang check
+      #  run: sh ./scripts/go.sh
 
       #- name: SSH connection to Actions
       #  uses: P3TERX/ssh2actions@v1.0.0
