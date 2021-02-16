@@ -37,7 +37,7 @@ jobs:
           sudo apt install libtool-bin gperf python-docutils autopoint gettext zip
       - name: Clone source code
         run: |
-          git clone --depth=1 https://github.com/hanwckf/rt-n56u.git /opt/rt-n56u
+          git clone -b custom --depth=1 https://github.com/yh793/rt-n56u.git /opt/rt-n56u
           cd /opt/rt-n56u/toolchain-mipsel
           sh dl_toolchain.sh
           mkdir -p /opt/images/
@@ -52,7 +52,7 @@ jobs:
       #  uses: P3TERX/ssh2actions@v1.0.0  
       - name: Build Firmware
         env:
-          TNAME: PSG1218 #K2P_nano-5.0 PSG1218 K2P-5.0 K2P K2P_nano PSG1208 PSG1218_nano
+          TNAME: PSG1218_nano #K2P_nano-5.0 PSG1218 K2P-5.0 K2P K2P_nano PSG1208 PSG1218_nano
         run: |
           cd /opt/rt-n56u/trunk
           if [ ! -f configs/templates/$TNAME.config ] ; then
