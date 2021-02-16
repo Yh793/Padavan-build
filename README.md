@@ -11,7 +11,7 @@ More on [Hanwckf](https://github.com/hanwckf/rt-n56u/)
 
 * 当前最新版本:K2P_nano-5.0.21.010121.trx  最后编译时间: 2021-01-01 23:29:18  下载地址: [奶牛快传](https://cowtransfer.com/s/4e616461205445)  [WeTransfer](https://we.tl/t-Rv6CUFUIr9)
 
-* 当前最新版本:PSG1218.2021021017.trx  最后编译时间: 2021-02-10 17:35:25  下载地址: [奶牛快传](https://cowtransfer.com/s/3cf7874b128043)  [WeTransfer](https://we.tl/t-izK7OWXhlP)
+* 当前最新版本:PSG1218_nano.2021021623.trx  最后编译时间: 2021-02-16 23:26:38  下载地址: [奶牛快传](https://cowtransfer.com/s/c9bd17aa23b44a)  [WeTransfer](https://we.tl/t-vBN09OyZmW)
 
 
 
