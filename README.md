@@ -9,7 +9,7 @@
 ## Hanwckf Padavan
 More on [Hanwckf](https://github.com/hanwckf/rt-n56u/)
 
-* 当前最新版本:K2P_nano-5.0.21.022515.trx  最后编译时间: 2021-02-25 15:54:59  下载地址: [奶牛快传](https://cowtransfer.com/s/3ceda72d8e194f)  [WeTransfer](https://we.tl/t-W7YC6X0iTj)
+* 当前最新版本:K2P_nano-5.0.21.022522.trx  最后编译时间: 2021-02-25 23:05:31  下载地址: [奶牛快传](https://cowtransfer.com/s/a2a8256102a642)  [WeTransfer](https://we.tl/t-b8oSbDID8r)
 
 * 当前最新版本:PSG1218_nano.2021021716.trx  最后编译时间: 2021-02-17 16:27:55  下载地址: [奶牛快传](https://cowtransfer.com/s/0ea2592cc4214a)  [WeTransfer](https://we.tl/t-tsag85Vpt7)
 
