@@ -41,7 +41,7 @@ jobs:
         run: sh ./scripts/go.sh
       - name: Clone source code
         run: |
-          git clone -b original --depth=1 https://github.com/Yh793/rt-n56u.git /opt/rt-n56u
+          git clone -b busybox --depth=1 https://github.com/Yh793/rt-n56u.git /opt/rt-n56u
           cd /opt/rt-n56u/toolchain-mipsel
           sh dl_toolchain.sh
           mkdir -p /opt/images/
