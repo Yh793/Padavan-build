@@ -161,7 +161,7 @@ jobs:
           #echo "自定义项=y" >> .config
           #########################################################################################
           sudo ./clear_tree
-          fakeroot ./build_firmware_modify $TNAME 0
+          sudo ./build_firmware_modify $TNAME 0
           sudo mv -f images/*.trx /opt/images/${TNAME}_ChongshengB_${{ steps.current-time.outputs.formattedTime }}.trx
           echo "FNAME=$TNAME" >> $GITHUB_ENV
       - name: Organize files
