@@ -54,7 +54,7 @@ jobs:
       #  uses: P3TERX/ssh2actions@v1.0.0  
       - name: Build Firmware
         env:
-          TNAME: K2P_nano-5.0 #K2P_nano-5.0 PSG1218 K2P-5.0 K2P K2P_nano PSG1208 PSG1218_nano
+          TNAME: K2P_nano # PSG1218 K2P-5.0 K2P K2P_nano PSG1208 PSG1218_nano
         run: |
           cd /opt/rt-n56u/trunk
           if [ ! -f configs/templates/$TNAME.config ] ; then
