@@ -45,14 +45,8 @@ jobs:
           mkdir -p /opt/images/
       - name: Recovery SSP bin files download from remote
         run: |
-          cp -f ssp/Makefile /opt/rt-n56u/trunk/user/shadowsocks
-          cp -f ssp/shadowsocks.sh /opt/rt-n56u/trunk/user/shadowsocks/scripts
-          cp -f ssp/defaults.c /opt/rt-n56u/trunk/user/shared
-          cp -f ssp/variables.c /opt/rt-n56u//trunk/user/httpd
-          cp -f ssp/Shadowsocks.asp /opt/rt-n56u/trunk/user/www/n56u_ribbon_fixed
-          cd /opt/rt-n56u/trunk/user/shared
-          sed -i "s#https://cdn.jsdelivr.net/gh/Padavan_CI/ssp/trojan#https://cdn.jsdelivr.net/gh/Yh793/Padavan-build/ssp/trojan#g" ./defaults.c
-          sed -i "s#https://cdn.jsdelivr.net/gh/Padavan_CI/ssp/v2ray#https://cdn.jsdelivr.net/gh/Yh793/Padavan-build/ssp/v2ray#g" ./defaults.c
+          cd /opt/rt-n56u/trunk
+          sed -i "s#20210228#20210723#g" ./versions.inc
           cd /opt/rt-n56u/trunk/user/adguardhome
           sed -i "s#https://cdn.jsdelivr.net/gh/chongshengB/rt-n56u/trunk/user/adguardhome/AdGuardHome#https://cdn.jsdelivr.net/gh/Yh793/Padavan-build/adg/AdGuardHome#g" ./adguardhome.sh
       - name: Get current time
@@ -69,7 +63,7 @@ jobs:
 
       - name: Build Firmware
         env:
-          TNAME: K2P-5.0 #PSG1218 K2P-5.0 K2P K2P_nano K2P_nano-5.0 PSG1208 PSG1218_nano
+          TNAME: K2P-5.0 #PSG1218 K2P K2P_nano PSG1208 PSG1218_nano
         run: |
           cd /opt/rt-n56u/trunk
           if [ ! -f configs/templates/$TNAME.config ] ; then
@@ -115,15 +109,15 @@ jobs:
           echo "CONFIG_FIRMWARE_INCLUDE_SOFTETHERVPN_CMD=n" >> .config #SOFTETHERVPN
           echo "CONFIG_FIRMWARE_INCLUDE_SFE=n" >> .config #集成SFE加速
           #
-          echo "CONFIG_FIRMWARE_INCLUDE_SHADOWSOCKS=y" >> .config #SS plus+
+          echo "CONFIG_FIRMWARE_INCLUDE_SHADOWSOCKS=n" >> .config #SS plus+
           echo "CONFIG_FIRMWARE_INCLUDE_V2RAY=n" >> .config #集成v2ray执行文件（3.8M左右)，如果不集成，会从网上下载下来执行，不影响正常使用
           echo "CONFIG_FIRMWARE_INCLUDE_TROJAN=n" >> .config #集成trojan执行文件(1.1M左右)，如果不集成，会从网上下载下来执行，不影响正常使用
-          echo "CONFIG_FIRMWARE_INCLUDE_SSOBFS=y" >> .config # simple-obfs混淆插件
+          echo "CONFIG_FIRMWARE_INCLUDE_SSOBFS=n" >> .config # simple-obfs混淆插件
           echo "CONFIG_FIRMWARE_INCLUDE_SSSERVER=n" >> .config #SS server
-          echo "CONFIG_FIRMWARE_INCLUDE_KUMASOCKS=y" >> .config #socks5
+          echo "CONFIG_FIRMWARE_INCLUDE_KUMASOCKS=n" >> .config #socks5
           #
-          echo "CONFIG_FIRMWARE_INCLUDE_IPT2SOCKS=y" >> .config
-          echo "CONFIG_FIRMWARE_INCLUDE_MICROSOCKS=y" >> .config
+          echo "CONFIG_FIRMWARE_INCLUDE_IPT2SOCKS=n" >> .config
+          echo "CONFIG_FIRMWARE_INCLUDE_MICROSOCKS=n" >> .config
           echo "CONFIG_FIRMWARE_INCLUDE_SRELAY=n" >> .config #可以不集成
           echo "CONFIG_FIRMWARE_INCLUDE_TUNSAFE=n" >> .config #TUNSAFE
           echo "CONFIG_FIRMWARE_INCLUDE_DNSFORWARDER=n" >> .config #DNSFORWARDER
@@ -136,9 +130,9 @@ jobs:
           #
           echo "CONFIG_FIRMWARE_INCLUDE_SMARTDNS=y" >> .config #smartdns
           echo "CONFIG_FIRMWARE_INCLUDE_SMARTDNSBIN=n" >> .config #smartdns二进制文件
-          echo "CONFIG_FIRMWARE_INCLUDE_ADGUARDHOME=y" >> .config
+          echo "CONFIG_FIRMWARE_INCLUDE_ADGUARDHOME=n" >> .config
           #
-          echo "CONFIG_FIRMWARE_INCLUDE_ALIDDNS=y" >> .config #阿里DDNS
+          echo "CONFIG_FIRMWARE_INCLUDE_ALIDDNS=n" >> .config #阿里DDNS
           echo "CONFIG_FIRMWARE_INCLUDE_ZEROTIER=n" >> .config #zerotier ~1.3M
           #       
           echo "CONFIG_FIRMWARE_INCLUDE_CADDY=n" >> .config #在线文件管理服务
