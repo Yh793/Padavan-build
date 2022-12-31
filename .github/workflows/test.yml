@@ -41,7 +41,8 @@ jobs:
         run: |
           git clone -b chongshengB --depth=1 https://github.com/Yh793/rt-n56u.git /opt/rt-n56u
           cd /opt/rt-n56u/toolchain-mipsel
-          #sh dl_toolchain.sh
+          ./clean_toolchain
+          ./build_toolchain
           mkdir -p /opt/images/
       - name: Recovery SSP bin files download from remote
         run: |
