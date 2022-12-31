@@ -41,12 +41,11 @@ jobs:
         run: |
           git clone -b chongshengB --depth=1 https://github.com/Yh793/rt-n56u.git /opt/rt-n56u
           cd /opt/rt-n56u/toolchain-mipsel
-          sh dl_toolchain.sh
+          #sh dl_toolchain.sh
           mkdir -p /opt/images/
       - name: Recovery SSP bin files download from remote
         run: |
           cd /opt/rt-n56u/trunk
-          sed -i "s#20210228#20210723#g" ./versions.inc
           cd /opt/rt-n56u/trunk/user/adguardhome
           sed -i "s#https://cdn.jsdelivr.net/gh/chongshengB/rt-n56u/trunk/user/adguardhome/AdGuardHome#https://cdn.jsdelivr.net/gh/Yh793/Padavan-build/adg/AdGuardHome#g" ./adguardhome.sh
       - name: Get current time
