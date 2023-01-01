@@ -67,6 +67,7 @@ jobs:
           sudo mv -f /opt/images/mipsel-linux-uclibc.tar.xz ./
           git config user.name  Robot
           git config user.email github-actions@github.com
+          git add .
           git commit -m "update toolchain" -a
           git push
       - name: Remove obsolete firmwares on artifacts
