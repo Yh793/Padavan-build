@@ -47,8 +47,7 @@ jobs:
           ./build_toolchain
           mkdir -p /opt/images/
           cd /opt/rt-n56u/toolchain-mipsel/toolchain-3.4.x
-          tar -Jcf mipsel-linux-uclibc.tar.xz ./
-          sudo mv -f mipsel-linux-uclibc.tar.xz /opt/images/
+          tar -Jcf /opt/images/mipsel-linux-uclibc.tar.xz ./
       - name: Organize files
         id: organize
         run: |
