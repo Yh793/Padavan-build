@@ -55,8 +55,8 @@ jobs:
         uses: josStorer/get-current-time@v2.0.2
         id: current-time
         with:
-        format: YY.MMDDHH
-         utcOffset: "+08:00"
+          format: YY.MMDDHH
+          utcOffset: "+08:00"
       #- name: Run Golang check
       #  run: sh ./scripts/go.sh
 
