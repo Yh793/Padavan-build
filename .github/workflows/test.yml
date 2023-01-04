@@ -1,5 +1,5 @@
 #修改TNAME: K2P-5.0 中的K2P-5.0为你需要编译的型号，注意名称要与configs/templates/目录下的名字相同
-name: C.K2P-5.0
+name: K2P_BUILD
 
 on:
   workflow_dispatch:
@@ -48,16 +48,15 @@ jobs:
           mkdir -p /opt/images/
       - name: Recovery SSP bin files download from remote
         run: |
-          cd /opt/rt-n56u/trunk
-          sed -i "s#20210228#20210723#g" ./versions.inc
           cd /opt/rt-n56u/trunk/user/adguardhome
           sed -i "s#https://cdn.jsdelivr.net/gh/chongshengB/rt-n56u/trunk/user/adguardhome/AdGuardHome#https://cdn.jsdelivr.net/gh/Yh793/Padavan-build/adg/AdGuardHome#g" ./adguardhome.sh
+          
       - name: Get current time
-        uses: 1466587594/get-current-time@v2
+        uses: josStorer/get-current-time@v2.0.2
         id: current-time
         with:
-          format: YY.MMDDHH
-          utcOffset: "+08:00"
+        format: YY.MMDDHH
+         utcOffset: "+08:00"
       #- name: Run Golang check
       #  run: sh ./scripts/go.sh
 
@@ -161,48 +160,24 @@ jobs:
           sudo ./build_firmware_modify $TNAME 0
           sudo mv -f images/*.trx /opt/images/${TNAME}_ChongshengB_${{ steps.current-time.outputs.formattedTime }}.trx
           echo "FNAME=$TNAME" >> $GITHUB_ENV
-      - name: Organize files
-        id: organize
-        run: |
-          echo "###########################"
-          echo "###########################"
-          echo "###########################"
-          echo "::set-output name=status::success"
+          echo "BUILDDONE=success" >> $GITHUB_ENV
+      
       - name: Upload packages - push to artifact file
         uses: actions/upload-artifact@main
-        if: steps.organize.outputs.status == 'success'
+        if: env.BUILDDONE == 'success'
         with:
           name: Padavan-packages
           path: /opt/images
       #上传到WeTransfer
       - name: Upload firmware to WeTransfer
         id: wetransfer
-        if: steps.organize.outputs.status == 'success'
+        if: env.BUILDDONE == 'success'
         run: |
           curl -fsSL git.io/file-transfer | sh
           ./transfer wet  -s -p 16 --no-progress /opt/images/*.trx 2>&1 | tee wetransfer.log
           echo "::warning file=wetransfer.com::$(cat wetransfer.log | grep https)"
           echo "DOWNLOADURL2=$(cat wetransfer.log | grep -o -E "https?://[a-zA-Z0-9\.\/_&=@$%?~#-]*")" >> $GITHUB_ENV
-          echo "::set-output name=status::success"
-      #上传到奶牛快传
-      - name: Upload firmware to cowtransfer
-        id: cowtransfer
-        if: steps.wetransfer.outputs.status == 'success'
-        run: |
-          curl -sL https://git.io/cowtransfer | sh
-          ./cowtransfer-uploader -s -p 16 --hash /opt/images/*.trx 2>&1 | tee cowtransfer.log
-          echo "::warning file=cowtransfer.com::$(cat cowtransfer.log | grep https)"
-          echo "DOWNLOADURL=$(cat cowtransfer.log | grep -o -E "https?://[a-zA-Z0-9\.\/_&=@$%?~#-]*")" >> $GITHUB_ENV
-          echo "::set-output name=status::success"
-      - name: Update README.md
-        if: steps.cowtransfer.outputs.status == 'success'
-        run: |
-          git pull origin master
-          sed "38c * 当前最新版本:${FNAME}.${{ steps.current-time.outputs.formattedTime }}.trx  最后编译时间: $(date -u -d '+8 hour' '+%Y-%m-%d %H:%M:%S')  下载地址: [奶牛快传](${DOWNLOADURL})  [WeTransfer](${DOWNLOADURL2})" README.md -i
-          git config user.name  Robot
-          git config user.email github-actions@github.com
-          git commit -m "update README.md" -a
-          git push
+          
       - name: Remove obsolete firmwares on artifacts
         uses: c-hive/gha-remove-artifacts@v1.2.0
         if: always()
