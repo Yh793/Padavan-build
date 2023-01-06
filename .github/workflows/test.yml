@@ -1,4 +1,3 @@
-#修改TNAME: K2P-5.0 中的K2P-5.0为你需要编译的型号，注意名称要与configs/templates/目录下的名字相同
 name: K2P_BUILD
 
 on:
@@ -26,17 +25,28 @@ jobs:
     if: github.event.repository.owner.id == github.event.sender.id
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@main
-      - name: Initialization environment
+      - uses: actions/checkout@v3
+      #- uses: hendrikmuhs/ccache-action@v1.2
+      - uses: actions/setup-go@v3
+        with:
+          go-version: '^1.18.6'
+      #- uses: actions/cache@v3
+      #  with:
+      #    path: |
+      #      ~/.cache/go-build
+      #      ~/go/pkg/mod
+      #    key: ${{ runner.os }}-go-v1
+      #    restore-keys: |
+      #      ${{ runner.os }}-go-
         env:
-          DEBIAN_FRONTEND: noninteractive
           token: ${{ secrets.R_TOKEN }}
+      - name: Prepare
         run: |
           sudo apt-get update
-          sudo apt-get -y install unzip libtool-bin curl cmake gperf gawk flex bison nano xxd fakeroot kmod \
-          cpio git python-docutils gettext automake autopoint texinfo build-essential help2man \
-          pkg-config zlib1g-dev libgmp3-dev libmpc-dev libmpfr-dev libncurses5-dev libltdl-dev wget libc-dev-bin
+          sudo apt update
+          sudo apt install libtool-bin gperf python3-docutils autopoint gettext ccache
+          # https://github.com/actions/setup-go/issues/107
+          echo "${GOROOT}/bin" >> $GITHUB_PATH
       - name: Clone source code
         run: |
           git clone -b chongshengB --depth=1 https://github.com/Yh793/rt-n56u.git /opt/rt-n56u
@@ -46,22 +56,21 @@ jobs:
           tar -xvf mipsel-linux-uclibc.tar.xz -C toolchain-3.4.x
           #sh dl_toolchain.sh
           mkdir -p /opt/images/
-      - name: Recovery SSP bin files download from remote
+      - name: adapt project
         run: |
           cd /opt/rt-n56u/trunk/user/adguardhome
           sed -i "s#https://cdn.jsdelivr.net/gh/chongshengB/rt-n56u/trunk/user/adguardhome/AdGuardHome#https://cdn.jsdelivr.net/gh/Yh793/Padavan-build/adg/AdGuardHome#g" ./adguardhome.sh
-          
+          cd /opt/rt-n56u/trunk/tools
+          sed -i '34,40s/^/#/' ./Makefile
+          cd /opt/rt-n56u/trunk/user/rc
+          sed -i '/DNS_RELAY_CACHE_MAX/d' ./services_ex.c
+
       - name: Get current time
         uses: josStorer/get-current-time@v2.0.2
         id: current-time
         with:
           format: YY.MMDDHH
           utcOffset: "+08:00"
-      #- name: Run Golang check
-      #  run: sh ./scripts/go.sh
-
-      #- name: SSH connection to Actions
-      #  uses: P3TERX/ssh2actions@v1.0.0
 
       - name: Build Firmware
         env:
@@ -173,7 +182,7 @@ jobs:
         id: wetransfer
         if: env.BUILDDONE == 'success'
         run: |
-          curl -fsSL git.io/file-transfer | sh
+          curl -fsSL https://git.io/file-transfer | sh
           ./transfer wet  -s -p 16 --no-progress /opt/images/*.trx 2>&1 | tee wetransfer.log
           echo "::warning file=wetransfer.com::$(cat wetransfer.log | grep https)"
           echo "DOWNLOADURL2=$(cat wetransfer.log | grep -o -E "https?://[a-zA-Z0-9\.\/_&=@$%?~#-]*")" >> $GITHUB_ENV
