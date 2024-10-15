@@ -1,0 +1,76 @@
+#修改TNAME: K2P-5.0 中的K2P-5.0为你需要编译的型号，注意名称要与configs/templates/目录下的名字相同
+name: H.PSG1218TEST
+
+on:
+  workflow_dispatch:
+    inputs:
+      name:
+        description: "Build Padavan"
+        required: true
+        default: "build"
+  #release:
+  # types: [created]
+  push:
+    tags:
+      - "v*"
+  #  branches:
+  #    - master
+  #  schedule:
+  #    - cron: 0 8 * * 5
+  #watch:
+  #  types: [started]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: github.event.repository.owner.id == github.event.sender.id
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@main
+      - name: Initialization environment
+        env:
+          DEBIAN_FRONTEND: noninteractive
+          token: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          sudo apt update
+          sudo apt install libtool-bin gperf python-docutils autopoint gettext zip
+      - name: Clone source code
+        run: |
+          git clone -b custom --depth=1 https://github.com/yh793/rt-n56u.git /opt/rt-n56u
+          cd /opt/rt-n56u/toolchain-mipsel
+          sh dl_toolchain.sh
+          mkdir -p /opt/images/
+
+      - name: Get current time
+        uses: 1466587594/get-current-time@v2
+        id: current-time
+        with:
+          format: YYYYMMDDHH
+          utcOffset: "+08:00"
+      - name: Build Firmware
+        env:
+          TNAME: PSG1218_nano 
+        run: |
+          cd /opt/rt-n56u/trunk
+          if [ ! -f configs/templates/$TNAME.config ] ; then
+          echo "configs/templates/$TNAME.config not found "
+          exit 1
+          fi
+          cp -f configs/templates/$TNAME.config .config
+
+          sudo ./clear_tree
+          sudo ./build_firmware_modify $TNAME 0
+          sudo mv -f images/*.trx /opt/images/${TNAME}_Hanwckf_${{ steps.current-time.outputs.formattedTime }}.trx
+          echo "FNAME=$TNAME" >> $GITHUB_ENV
+
+      - name: Organize files
+        id: organize
+        run: |
+          echo "::set-output name=status::success"
+      - name: Upload packages - push to artifact file
+        uses: actions/upload-artifact@main
+        if: steps.organize.outputs.status == 'success'
+        with:
+          name: Padavan-packages
+          path: /opt/images
